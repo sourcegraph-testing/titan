@@ -536,27 +536,26 @@ func TestRemoveRepByMap(t *testing.T) {
 		want [][]byte
 	}{
 		{
-			name:  "single member",
-			args:  args{
-				members : [][]byte{[]byte("value1")},
+			name: "single member",
+			args: args{
+				members: [][]byte{[]byte("value1")},
 			},
-			want:  [][]byte{[]byte("value1")},
+			want: [][]byte{[]byte("value1")},
 		},
 		{
-			name:  "multi members",
-			args:  args{
-				members : [][]byte{[]byte("value1"),[]byte("value2"),[]byte("value3")},
+			name: "multi members",
+			args: args{
+				members: [][]byte{[]byte("value1"), []byte("value2"), []byte("value3")},
 			},
-			want:  [][]byte{[]byte("value1"),[]byte("value2"),[]byte("value3")},
+			want: [][]byte{[]byte("value1"), []byte("value2"), []byte("value3")},
 		},
 		{
-			name:  "with duplicate members",
-			args:  args{
-				members : [][]byte{[]byte("value1"),[]byte("value2"),[]byte("value1")},
+			name: "with duplicate members",
+			args: args{
+				members: [][]byte{[]byte("value1"), []byte("value2"), []byte("value1")},
 			},
-			want:  [][]byte{[]byte("value1"),[]byte("value2")},
+			want: [][]byte{[]byte("value1"), []byte("value2")},
 		},
-
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

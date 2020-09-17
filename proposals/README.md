@@ -1,4 +1,4 @@
-# Proposal Guidelines
+# WELCOME TO THE README OF Proposal Guidelines
 
 ## Background
 

@@ -13,11 +13,15 @@ It has these top-level messages:
 */
 package zlistproto
 
-import proto "github.com/golang/protobuf/proto"
-import fmt "fmt"
-import math "math"
+import (
+	fmt "fmt"
 
-import io "io"
+	proto "github.com/golang/protobuf/proto"
+
+	math "math"
+
+	io "io"
+)
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal

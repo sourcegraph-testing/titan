@@ -75,3 +75,7 @@ require (
 go 1.13
 
 replace gopkg.in/stretchr/testify.v1 => github.com/stretchr/testify v1.2.2
+
+replace (
+	go.uber.org/zap => github.com/sourcegraph-testing/zap v1.12.0
+)

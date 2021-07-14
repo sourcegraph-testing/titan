@@ -119,3 +119,5 @@ View our [Roadmap](https://github.com/distributedio/titan/projects)
 
 ## Release Note
 * 20.4.21: add support for rpop and rpoplpush
+this is step 2
+this is step 3

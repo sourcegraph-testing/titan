@@ -21,9 +21,9 @@
 
 // stuff
 
-// line buffers
-
-// stuff
+import (
+  "github.snooguts.net/reddit/reddit-service-authentication-go/thrift/reddit/sso"
+)
 
 var configPath = flag.String("config", "", "Path to the config file to use.")
 

@@ -1,5 +1,5 @@
 # Builder image
-FROM golang:latest as builder
+FROM golang:latest@sha256:f38c7f7bbaca5d664e39cd982a1cb5b6f8e999244e9ddb6ec8ba098438b3f4da as builder
 
 RUN apk add --no-cache \
     make \

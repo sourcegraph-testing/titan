@@ -261,7 +261,7 @@ func AutoCommit(cmd TxnCommand) Command {
 }
 
 func feedMonitors(ctx *Context) {
-	ctx.Server.Monitors.Range(func(k, v interface{}) bool {
+	ctx.Server.Monitors.Range(func(k, v any) bool {
 		mCtx := v.(*Context)
 		if mCtx.Client.Namespace != sysAdminNamespace && mCtx.Client.Namespace != ctx.Client.Namespace {
 			return true

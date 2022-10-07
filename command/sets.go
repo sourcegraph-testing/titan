@@ -206,12 +206,12 @@ type MinHeap []*db.SetIter
 func (h MinHeap) Len() int           { return len(h) }
 func (h MinHeap) Less(i, j int) bool { return bytes.Compare(h[i].Value(), h[j].Value()) < 0 }
 func (h MinHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
-func (h *MinHeap) Push(x interface{}) {
+func (h *MinHeap) Push(x any) {
 	item := x.(*db.SetIter)
 	*h = append(*h, item)
 }
 
-func (h *MinHeap) Pop() interface{} {
+func (h *MinHeap) Pop() any {
 	old := *h
 	n := len(old)
 	item := old[n-1]

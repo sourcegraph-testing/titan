@@ -122,7 +122,7 @@ func WithTimeout(parent *Context, timeout time.Duration) (*Context, CancelFunc) 
 }
 
 // WithValue returns a copy of parent in which the value associated with key is val.
-func WithValue(parent *Context, key, val interface{}) *Context {
+func WithValue(parent *Context, key, val any) *Context {
 	ctx := *parent
 	ctx.Context = context.WithValue(parent.Context, key, val)
 	return &ctx

@@ -42,7 +42,7 @@ const (
 	PriorityHigh
 )
 
-//type rename tidb kv type
+// type rename tidb kv type
 type (
 	// Storage defines the interface for storage.
 	Storage kv.Storage
@@ -54,7 +54,7 @@ type (
 	Option kv.Option
 )
 
-//Open create tikv db ,create fake db if addr contains mockaddr
+// Open create tikv db ,create fake db if addr contains mockaddr
 func Open(addrs string) (r Storage, e error) {
 	if strings.Contains(addrs, MockAddr) {
 		return MockOpen(addrs)
@@ -96,7 +96,7 @@ func BatchGetValues(txn Transaction, keys [][]byte) (map[string][]byte, error) {
 	return txn.BatchGet(kvkeys)
 }
 
-func SetOption(txn Transaction, opt Option, val interface{}) {
+func SetOption(txn Transaction, opt Option, val any) {
 	txn.SetOption(kv.Option(opt), val)
 }
 

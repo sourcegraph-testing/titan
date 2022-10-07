@@ -29,7 +29,7 @@ func Client(ctx *Context) {
 		now := time.Now()
 		var lines []string
 		clients := &ctx.Server.Clients
-		clients.Range(func(k, v interface{}) bool {
+		clients.Range(func(k, v any) bool {
 			client := v.(*context.ClientContext)
 			if ctx.Client.Namespace != sysAdminNamespace && client.Namespace != ctx.Client.Namespace {
 				return true
@@ -145,7 +145,7 @@ func Client(ctx *Context) {
 		// now kill clients with above rules
 		killed := 0
 		closeSelf := false
-		ctx.Server.Clients.Range(func(k, v interface{}) bool {
+		ctx.Server.Clients.Range(func(k, v any) bool {
 			cli := v.(*context.ClientContext)
 
 			if cli.Namespace != sysAdminNamespace && cli.Namespace != ctx.Client.Namespace {
@@ -366,7 +366,7 @@ func Info(ctx *Context) {
 
 	// count the number of clients
 	var numberOfClients int
-	ctx.Server.Clients.Range(func(k, v interface{}) bool {
+	ctx.Server.Clients.Range(func(k, v any) bool {
 		numberOfClients++
 		return true
 	})

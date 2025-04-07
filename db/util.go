@@ -5,8 +5,6 @@ import (
 	"math"
 	"math/bits"
 	"time"
-
-	"github.com/satori/go.uuid"
 )
 
 // UUID allocates an unique object ID.

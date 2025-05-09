@@ -50,7 +50,7 @@ func Escan(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 		return BytesArray(ctx.Out, nil), nil
 	}
 	// set the last ts as cursor
-	cursor := fmt.Sprintf("%d", at[n-1])
+	cursor := strconv.Itoa(at[n-1])
 
 	// set cursor to 0 if there is no more results
 	if int64(n) < count {

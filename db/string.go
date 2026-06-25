@@ -1,6 +1,7 @@
 package db
 
 import (
+	"errors"
 	"strconv"
 
 	"go.uber.org/zap"
@@ -34,7 +35,7 @@ func GetString(txn *Transaction, key []byte) (*String, error) {
 		}
 		return nil, err
 	}
-	if err := str.decode(Meta); err != nil && err != ErrKeyNotFound {
+	if err := str.decode(Meta); err != nil && !errors.Is(err, ErrKeyNotFound) {
 		return nil, err
 	}
 

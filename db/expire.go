@@ -3,6 +3,7 @@ package db
 import (
 	"bytes"
 	"context"
+	"errors"
 	"time"
 
 	"github.com/distributedio/titan/conf"
@@ -238,7 +239,7 @@ func doExpire(txn *Transaction, mkey, id []byte) error {
 	namespace, dbid, key := splitMetaKey(mkey)
 	obj, err := getObject(txn, mkey)
 	// Check for dirty data due to copying or flushdb/flushall
-	if err == ErrKeyNotFound {
+	if errors.Is(err, ErrKeyNotFound) {
 		return gcDataKey(txn, namespace, dbid, key, id)
 	}
 	if err != nil {

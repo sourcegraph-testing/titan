@@ -18,7 +18,7 @@ func SAdd(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	}
 	set, err := txn.Set(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -35,7 +35,7 @@ func SMembers(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	key := []byte(ctx.Args[0])
 	set, err := txn.Set(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -52,7 +52,7 @@ func SCard(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	key := []byte(ctx.Args[0])
 	set, err := txn.Set(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -70,7 +70,7 @@ func SIsmember(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	member := []byte(ctx.Args[1])
 	set, err := txn.Set(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -101,7 +101,7 @@ func SPop(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 
 	set, err := txn.Set(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -122,7 +122,7 @@ func SRem(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	}
 	set, err := txn.Set(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -142,7 +142,7 @@ func SMove(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	member = []byte(ctx.Args[2])
 	set, err := txn.Set(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -161,7 +161,7 @@ func SUnion(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	for _, key := range ctx.Args {
 		set, err := txn.Set([]byte(key))
 		if err != nil {
-			if err == db.ErrTypeMismatch {
+			if errors.Is(err, db.ErrTypeMismatch) {
 				return nil, ErrTypeMismatch
 			}
 			return nil, errors.New("ERR " + err.Error())
@@ -226,7 +226,7 @@ func SInter(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	for i, key := range ctx.Args {
 		set, err := txn.Set([]byte(key))
 		if err != nil {
-			if err == db.ErrTypeMismatch {
+			if errors.Is(err, db.ErrTypeMismatch) {
 				return nil, ErrTypeMismatch
 			}
 			return nil, errors.New("ERR " + err.Error())
@@ -281,7 +281,7 @@ func SDiff(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	for i, key := range ctx.Args {
 		set, err := txn.Set([]byte(key))
 		if err != nil {
-			if err == db.ErrTypeMismatch {
+			if errors.Is(err, db.ErrTypeMismatch) {
 				return nil, ErrTypeMismatch
 			}
 			return nil, errors.New("ERR " + err.Error())

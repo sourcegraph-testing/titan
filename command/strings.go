@@ -19,14 +19,14 @@ func Get(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	key := ctx.Args[0]
 	str, err := txn.String([]byte(key))
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
 	}
 	val, err := str.Get()
 	if err != nil {
-		if err == db.ErrKeyNotFound {
+		if errors.Is(err, db.ErrKeyNotFound) {
 			return NullBulkString(ctx.Out), nil
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -86,24 +86,24 @@ func Set(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	}
 
 	obj, err := txn.Object(key)
-	if err != nil && err != db.ErrKeyNotFound {
+	if err != nil && !errors.Is(err, db.ErrKeyNotFound) {
 		return nil, errors.New("ERR " + err.Error())
 	}
 
 	//xx
 	if flag == 2 {
-		if err == db.ErrKeyNotFound {
+		if errors.Is(err, db.ErrKeyNotFound) {
 			return NullBulkString(ctx.Out), nil
 		}
 	}
 	//nx
 	if flag == 1 {
-		if err != db.ErrKeyNotFound {
+		if !errors.Is(err, db.ErrKeyNotFound) {
 			return NullBulkString(ctx.Out), nil
 		}
 	}
 
-	if err != db.ErrKeyNotFound {
+	if !errors.Is(err, db.ErrKeyNotFound) {
 		txn.Destory(obj, key)
 	}
 
@@ -181,7 +181,7 @@ func Strlen(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	key := ctx.Args[0]
 	str, err := txn.String([]byte(key))
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -202,7 +202,7 @@ func Append(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	value := []byte(ctx.Args[1])
 	str, err := txn.String(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -221,7 +221,7 @@ func GetSet(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	v := []byte(ctx.Args[1])
 	str, err := txn.String(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -242,7 +242,7 @@ func GetRange(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	key := ctx.Args[0]
 	str, err := txn.String([]byte(key))
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -275,7 +275,7 @@ func SetNx(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	key := []byte(ctx.Args[0])
 	str, err := txn.String(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return Integer(ctx.Out, int64(0)), nil
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -296,10 +296,10 @@ func SetEx(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	//get the key
 	key := []byte(ctx.Args[0])
 	obj, err := txn.Object(key)
-	if err != nil && err != db.ErrKeyNotFound {
+	if err != nil && !errors.Is(err, db.ErrKeyNotFound) {
 		return nil, errors.New("ERR " + err.Error())
 	}
-	if err != db.ErrKeyNotFound {
+	if !errors.Is(err, db.ErrKeyNotFound) {
 		txn.Destory(obj, key)
 	}
 
@@ -324,11 +324,11 @@ func PSetEx(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	//get the key
 	key := []byte(ctx.Args[0])
 	obj, err := txn.Object(key)
-	if err != nil && err != db.ErrKeyNotFound {
+	if err != nil && !errors.Is(err, db.ErrKeyNotFound) {
 		return nil, errors.New("ERR " + err.Error())
 	}
 
-	if err != db.ErrKeyNotFound {
+	if !errors.Is(err, db.ErrKeyNotFound) {
 		txn.Destory(obj, key)
 	}
 
@@ -359,7 +359,7 @@ func SetRange(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 
 	str, err := txn.String(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -379,7 +379,7 @@ func Incr(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	key := []byte(ctx.Args[0])
 	str, err := txn.String(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -396,7 +396,7 @@ func IncrBy(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	key := []byte(ctx.Args[0])
 	str, err := txn.String(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -418,7 +418,7 @@ func IncrByFloat(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	key := []byte(ctx.Args[0])
 	str, err := txn.String([]byte(key))
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -439,7 +439,7 @@ func Decr(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	key := []byte(ctx.Args[0])
 	str, err := txn.String(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -457,7 +457,7 @@ func DecrBy(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	key := []byte(ctx.Args[0])
 	str, err := txn.String(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -497,7 +497,7 @@ func SetBit(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 
 	str, err := txn.String(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -522,7 +522,7 @@ func GetBit(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 
 	str, err := txn.String(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -548,7 +548,7 @@ func BitCount(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	key := []byte(ctx.Args[0])
 	str, err := txn.String(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -597,7 +597,7 @@ func BitPos(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	key := []byte(ctx.Args[0])
 	str, err := txn.String(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())

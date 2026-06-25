@@ -43,7 +43,7 @@ func ZAdd(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 
 	zset, err := txn.ZSet(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -84,7 +84,7 @@ func zAnyOrderRange(ctx *Context, txn *db.Transaction, positiveOrder bool) (OnCo
 
 	zset, err := txn.ZSet(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -142,7 +142,7 @@ func zAnyOrderRangeByScore(ctx *Context, txn *db.Transaction, positiveOrder bool
 
 	zset, err := txn.ZSet(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -181,7 +181,7 @@ func ZRem(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 
 	zset, err := txn.ZSet(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -203,7 +203,7 @@ func ZCard(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 
 	zset, err := txn.ZSet(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -221,7 +221,7 @@ func ZScore(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 
 	zset, err := txn.ZSet(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())

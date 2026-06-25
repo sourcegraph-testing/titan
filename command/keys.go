@@ -58,7 +58,7 @@ func Expire(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 
 	at := time.Now().Add(time.Second * time.Duration(seconds)).UnixNano()
 	if err := kv.ExpireAt(key, at); err != nil {
-		if err == db.ErrKeyNotFound {
+		if errors.Is(err, db.ErrKeyNotFound) {
 			return Integer(ctx.Out, 0), nil
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -81,7 +81,7 @@ func ExpireAt(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	}
 
 	if err := kv.ExpireAt(key, at); err != nil {
-		if err == db.ErrKeyNotFound {
+		if errors.Is(err, db.ErrKeyNotFound) {
 			return Integer(ctx.Out, 0), nil
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -95,15 +95,15 @@ func Persist(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	kv := txn.Kv()
 	key := []byte(ctx.Args[0])
 	obj, err := txn.Object(key)
-	if err != nil && err != db.ErrKeyNotFound {
+	if err != nil && !errors.Is(err, db.ErrKeyNotFound) {
 		return nil, errors.New("ERR " + err.Error())
 	}
-	if err == db.ErrKeyNotFound || obj.ExpireAt == 0 {
+	if errors.Is(err, db.ErrKeyNotFound) || obj.ExpireAt == 0 {
 		return Integer(ctx.Out, 0), nil
 	}
 
 	if err := kv.ExpireAt(key, 0); err != nil {
-		if err == db.ErrKeyNotFound {
+		if errors.Is(err, db.ErrKeyNotFound) {
 			return Integer(ctx.Out, 0), nil
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -121,7 +121,7 @@ func PExpire(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	}
 	at := time.Now().Add(time.Millisecond * time.Duration(ms)).UnixNano()
 	if err := kv.ExpireAt(key, at); err != nil {
-		if err == db.ErrKeyNotFound {
+		if errors.Is(err, db.ErrKeyNotFound) {
 			return Integer(ctx.Out, 0), nil
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -144,7 +144,7 @@ func PExpireAt(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 		at = 1
 	}
 	if err := kv.ExpireAt(key, at); err != nil {
-		if err == db.ErrKeyNotFound {
+		if errors.Is(err, db.ErrKeyNotFound) {
 			return Integer(ctx.Out, 0), nil
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -158,7 +158,7 @@ func TTL(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	now := db.Now()
 	obj, err := txn.Object(key)
 	if err != nil {
-		if err == db.ErrKeyNotFound {
+		if errors.Is(err, db.ErrKeyNotFound) {
 			return Integer(ctx.Out, -2), nil
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -177,7 +177,7 @@ func PTTL(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	now := db.Now()
 	obj, err := txn.Object(key)
 	if err != nil {
-		if err == db.ErrKeyNotFound {
+		if errors.Is(err, db.ErrKeyNotFound) {
 			return Integer(ctx.Out, -2), nil
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -212,7 +212,7 @@ func Object(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 		key := []byte(ctx.Args[1])
 		obj, err := txn.Object(key)
 		if err != nil {
-			if err == db.ErrKeyNotFound {
+			if errors.Is(err, db.ErrKeyNotFound) {
 				return NullBulkString(ctx.Out), nil
 			}
 			return nil, errors.New("ERR " + err.Error())
@@ -235,7 +235,7 @@ func Type(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	key := []byte(ctx.Args[0])
 	obj, err := txn.Object(key)
 	if err != nil {
-		if err == db.ErrKeyNotFound {
+		if errors.Is(err, db.ErrKeyNotFound) {
 			return SimpleString(ctx.Out, "none"), nil
 		}
 		return nil, errors.New("ERR " + err.Error())

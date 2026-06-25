@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/distributedio/titan/conf"
@@ -79,7 +80,7 @@ func RemoveZTKey(txn *Transaction, metakey []byte) error {
 func doZListTransfer(txn *Transaction, metakey []byte) (int, error) {
 	zlist, err := loadZList(txn, metakey)
 	if err != nil {
-		if err == ErrTypeMismatch || err == ErrEncodingMismatch || err == ErrKeyNotFound {
+		if errors.Is(err, ErrTypeMismatch) || errors.Is(err, ErrEncodingMismatch) || errors.Is(err, ErrKeyNotFound) {
 			if err = RemoveZTKey(txn, metakey); err != nil {
 				zap.L().Error("[ZT] error in remove ZTKkey", zap.Error(err))
 				return 0, err

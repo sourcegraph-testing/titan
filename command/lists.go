@@ -28,7 +28,7 @@ func LPush(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	key := []byte(args[0])
 	lst, err := txn.List(key, opts...)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -47,7 +47,7 @@ func LPushx(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	key := []byte(ctx.Args[0])
 	lst, err := txn.List(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -74,7 +74,7 @@ func LPop(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	lst, err := txn.List(key)
 
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -107,7 +107,7 @@ func LRange(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 
 	lst, err := txn.List(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -146,7 +146,7 @@ func LInsert(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 
 	lst, err := txn.List(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -173,7 +173,7 @@ func LIndex(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 
 	lst, err := txn.List(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -183,7 +183,7 @@ func LIndex(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	}
 	val, err := lst.Index(n)
 	if err != nil {
-		if err == db.ErrOutOfRange {
+		if errors.Is(err, db.ErrOutOfRange) {
 			return NullBulkString(ctx.Out), nil
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -197,7 +197,7 @@ func LLen(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	key := []byte(ctx.Args[0])
 	lst, err := txn.List(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -219,7 +219,7 @@ func LRem(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	}
 	lst, err := txn.List(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -248,7 +248,7 @@ func LTrim(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	}
 	lst, err := txn.List(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -270,7 +270,7 @@ func LSet(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	key := []byte(ctx.Args[0])
 	lst, err := txn.List(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -284,7 +284,7 @@ func LSet(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 		return nil, ErrInteger
 	}
 	if err := lst.Set(n, []byte(ctx.Args[2])); err != nil {
-		if err == db.ErrOutOfRange {
+		if errors.Is(err, db.ErrOutOfRange) {
 			return nil, ErrIndex
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -297,7 +297,7 @@ func RPop(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	key := []byte(ctx.Args[0])
 	lst, err := txn.List(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -317,7 +317,7 @@ func RPop(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 func RPopLPush(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	listsrc, err := txn.List([]byte(ctx.Args[0]))
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -334,7 +334,7 @@ func RPopLPush(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	// create dst list on not exist
 	listdst, err := txn.List([]byte(ctx.Args[1]))
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, ErrSyntax
@@ -358,7 +358,7 @@ func RPush(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 
 	lst, err := txn.List(key, opts...)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())
@@ -377,7 +377,7 @@ func RPushx(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 	key := []byte(ctx.Args[0])
 	lst, err := txn.List(key)
 	if err != nil {
-		if err == db.ErrTypeMismatch {
+		if errors.Is(err, db.ErrTypeMismatch) {
 			return nil, ErrTypeMismatch
 		}
 		return nil, errors.New("ERR " + err.Error())

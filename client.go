@@ -3,7 +3,6 @@ package titan
 import (
 	"bufio"
 	"io"
-	"io/ioutil"
 	"net"
 	"strings"
 	"sync"
@@ -121,7 +120,7 @@ func (c *client) serve(conn net.Conn) error {
 
 		// Skip reply if necessary
 		if c.cliCtx.SkipN != 0 {
-			ctx.Out = ioutil.Discard
+			ctx.Out = io.Discard
 			if c.cliCtx.SkipN > 0 {
 				c.cliCtx.SkipN--
 			}

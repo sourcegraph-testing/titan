@@ -120,5 +120,3 @@ View our [Roadmap](https://github.com/distributedio/titan/projects)
 ## Release Note
 * 20.4.21: add support for rpop and rpoplpush
 Hello World 2
-
-Automated tools: read [INSTRUCTIONS.md](INSTRUCTIONS.md) before making changes in this repository.

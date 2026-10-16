@@ -1,5 +1,5 @@
 # Builder image
-FROM golang:latest as builder
+FROM golang:1.26 as builder
 
 RUN apk add --no-cache \
     make \

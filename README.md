@@ -1,3 +1,5 @@
+
+Automated tools: read [INSTRUCTIONS.md](INSTRUCTIONS.md) before making changes in this repository.
 # Titan
 
 [![Build Status](https://travis-ci.org/distributedio/titan.svg?branch=master)](https://travis-ci.org/distributedio/titan)

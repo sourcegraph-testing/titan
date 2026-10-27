@@ -120,3 +120,7 @@ View our [Roadmap](https://github.com/distributedio/titan/projects)
 ## Release Note
 * 20.4.21: add support for rpop and rpoplpush
 Hello World 2
+
+## Support
+
+For questions, bug reports, or feature requests, please [open an issue on GitHub](https://github.com/sourcegraph-testing/titan/issues).

@@ -6,7 +6,7 @@
 [![Coverage Status](https://img.shields.io/badge/version-v0.3.1-brightgreen.svg)](https://github.com/distributedio/titan/releases)
 [![Discourse status](https://img.shields.io/discourse/https/meta.discourse.org/status.svg)](https://titan-tech-group.slack.com)
 
-A distributed implementation of __Redis compatible layer__  based on [TiKV](https://github.com/tikv/tikv/)
+A distributed implementation of __Redis compatible layer__ based on [TiKV](https://github.com/tikv/tikv/).
 
 ## Why Titan?
 
@@ -46,7 +46,7 @@ Titan works with 2 TiDB components:
 * TiKV
 * PD
 
-To setup TiKV and PD, please follow the official [instructions](https://pingcap.com/docs-cn/dev/how-to/deploy/orchestrated/ansible/)
+To set up TiKV and PD, please follow the official [instructions](https://pingcap.com/docs-cn/dev/how-to/deploy/orchestrated/ansible/).
 
 ### Run Titan
 
@@ -58,7 +58,7 @@ cd $GOPATH/src/github.com/distributedio/titan
 make
 ```
 
-* Edit the configration file
+* Edit the configuration file
 
 ```
 pd-addrs="tikv://your-pd-addrs:port"
@@ -70,7 +70,7 @@ pd-addrs="tikv://your-pd-addrs:port"
 ./titan
 ```
 
-For more details about [Deploy Titan](docs/ops/deploy.md), click here.
+For more details, see [Deploy Titan](docs/ops/deploy.md).
 
 ## Commands supporting status
 
@@ -107,7 +107,7 @@ Basic benchmarking result.
 
 ![Set command benchmark](docs/benchmark/set-benchmark.png)
 
-For more info, please vist here [Titan Benchmarks](docs/benchmark/benchmark.md)
+For more info, please visit [Titan Benchmarks](docs/benchmark/benchmark.md).
 
 ## FAQ
 

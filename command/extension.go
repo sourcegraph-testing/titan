@@ -2,10 +2,11 @@ package command
 
 import (
 	"fmt"
-	"github.com/distributedio/titan/db"
-	"github.com/distributedio/titan/encoding/resp"
 	"math"
 	"strconv"
+
+	"github.com/distributedio/titan/db"
+	"github.com/distributedio/titan/encoding/resp"
 )
 
 // Escan scan the expiration list
@@ -50,7 +51,7 @@ func Escan(ctx *Context, txn *db.Transaction) (OnCommit, error) {
 		return BytesArray(ctx.Out, nil), nil
 	}
 	// set the last ts as cursor
-	cursor := fmt.Sprintf("%d", at[n-1])
+	cursor := strconv.Itoa(at[n-1])
 
 	// set cursor to 0 if there is no more results
 	if int64(n) < count {
